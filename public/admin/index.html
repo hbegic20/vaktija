@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="bs">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vaktija TV - Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/admin/admin.css" />
+  </head>
+  <body>
+    <div class="shell">
+      <header>
+        <h1>Vaktija TV - Administracija obavijesti</h1>
+        <p>Uredi tekstove koji se prikazuju na TV ekranu.</p>
+      </header>
+
+      <section id="pin-section" class="card">
+        <h2>Pristup</h2>
+        <label>
+          PIN
+          <input id="pin-input" type="password" placeholder="Unesite PIN" />
+        </label>
+        <button id="pin-submit">Otključaj</button>
+        <p id="pin-error" class="error hidden">Pogrešan PIN.</p>
+      </section>
+
+      <section id="editor-section" class="card hidden">
+        <div class="toolbar">
+          <h2>Obavijesti</h2>
+          <div class="actions">
+            <button id="add-item">Dodaj obavijest</button>
+            <button id="reload-items" class="ghost">Osvježi</button>
+          </div>
+        </div>
+
+        <div id="items"></div>
+
+        <div class="footer">
+          <button id="save-items">Sačuvaj</button>
+          <button id="reset-items" class="ghost">Vrati zadano</button>
+          <span id="status" class="status"></span>
+        </div>
+      </section>
+    </div>
+
+    <script type="module" src="/admin/admin.js"></script>
+  </body>
+</html>

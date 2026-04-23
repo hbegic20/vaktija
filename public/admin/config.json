@@ -1,0 +1,4 @@
+{
+  "endpoint": "/.netlify/functions/announcements",
+  "pin": "1234"
+}

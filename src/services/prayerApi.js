@@ -1,4 +1,5 @@
 const PRAYER_API_DEFAULT_BASE_URL = "https://api.vaktija.ba/vaktija/v1";
+const PRAYER_API_FALLBACK_BASE_URL = "/.netlify/functions/prayer-times";
 
 const PRAYER_ORDER = ["Fajr", "Sunrise", "Dhuhr", "Asr", "Maghrib", "Isha"];
 
@@ -21,29 +22,13 @@ const normalizeTime = (time) => {
   return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
 };
 
-export const prayerOrder = PRAYER_ORDER;
-
-export async function fetchPrayerTimes(townId, date, options = {}) {
-  const dateKey = toLocalDateKey(date);
-  const cacheKey = `vaktija_${townId}_${dateKey}`;
-  const cached = localStorage.getItem(cacheKey);
-  if (cached) {
-    return JSON.parse(cached);
-  }
-
-  const baseUrl = options.baseUrl || PRAYER_API_DEFAULT_BASE_URL;
-  const response = await fetch(`${baseUrl}/${townId}/${toApiDatePath(date)}`);
-  if (!response.ok) {
-    throw new Error("Ne mogu učitati vrijeme namaza.");
-  }
-
-  const data = await response.json();
+const toNormalizedPrayerResponse = (data, townId, dateKey) => {
   const timings = data?.vakat;
   if (!Array.isArray(timings) || timings.length < 6) {
     throw new Error("Neispravan odgovor za namaze.");
   }
 
-  const normalized = {
+  return {
     date: dateKey,
     timings: {
       Fajr: normalizeTime(timings[0]),
@@ -56,7 +41,50 @@ export async function fetchPrayerTimes(townId, date, options = {}) {
     location: data?.lokacija || "",
     townId: data?.id ?? townId
   };
+};
 
-  localStorage.setItem(cacheKey, JSON.stringify(normalized));
-  return normalized;
+const fetchFromBaseUrl = async (baseUrl, townId, date, dateKey) => {
+  const normalizedBaseUrl = String(baseUrl || "").replace(/\/$/, "");
+  const response = await fetch(`${normalizedBaseUrl}/${townId}/${toApiDatePath(date)}`);
+
+  if (!response.ok) {
+    throw new Error("Ne mogu učitati vrijeme namaza.");
+  }
+
+  const data = await response.json();
+  return toNormalizedPrayerResponse(data, townId, dateKey);
+};
+
+export const prayerOrder = PRAYER_ORDER;
+
+export async function fetchPrayerTimes(townId, date, options = {}) {
+  const dateKey = toLocalDateKey(date);
+  const cacheKey = `vaktija_${townId}_${dateKey}`;
+  const cached = localStorage.getItem(cacheKey);
+  if (cached) {
+    return JSON.parse(cached);
+  }
+
+  const baseUrls = [
+    options.primaryBaseUrl || options.baseUrl || PRAYER_API_DEFAULT_BASE_URL,
+    options.fallbackBaseUrl || PRAYER_API_FALLBACK_BASE_URL
+  ].filter(Boolean);
+  const uniqueBaseUrls = [...new Set(baseUrls)];
+
+  let lastError;
+  for (const baseUrl of uniqueBaseUrls) {
+    try {
+      const normalized = await fetchFromBaseUrl(baseUrl, townId, date, dateKey);
+      localStorage.setItem(cacheKey, JSON.stringify(normalized));
+      return normalized;
+    } catch (error) {
+      lastError = error;
+    }
+  }
+
+  if (lastError) {
+    throw lastError;
+  }
+
+  throw new Error("Ne mogu učitati vrijeme namaza.");
 }

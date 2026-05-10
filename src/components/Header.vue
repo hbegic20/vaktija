@@ -1,11 +1,16 @@
 <template>
-  <header class="flex items-center justify-between w-full">
-    <div class="flex items-center justify-between gap-4 w-full">
-      <!-- <img src="/logo.png" alt="Logo" class="h-16 w-16 object-contain" /> -->
-      <div>
-        <div class="text-[30px] text-slate-800 font-semibold">{{ mosqueName }}</div>
+  <header class="hero-header flex items-center justify-between w-full gap-6">
+    <div class="flex items-center gap-5 min-w-0">
+      <div class="hero-logo-wrap">
+        <img src="/vesela.jpeg" alt="Logo" class="hero-logo cover" />
       </div>
-      <div class="text-[26px] text-slate-600">Grad: {{ cityLabel }}, Vesela</div>
+      <div class="min-w-0">
+        <div class="text-[14px] uppercase tracking-[0.42em] text-emerald-900/80">Vaktija</div>
+        <div class="text-[32px] text-slate-800 font-semibold leading-tight">{{ mosqueName }}</div>
+      </div>
+    </div>
+    <div class="hero-city-chip text-[24px] text-slate-700">
+      Grad: {{ cityLabel }}, Vesela
     </div>
   </header>
 </template>

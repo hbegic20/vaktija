@@ -45,8 +45,90 @@ export function getHolidayCountdown(today, date) {
   };
 }
 
+const DAY_MS = 1000 * 60 * 60 * 24;
+const DEFAULT_BAJRAM_INTERVAL_DAYS = 354;
+
+const parseDate = (date) => new Date(`${date}T00:00:00`);
+
+const formatDate = (date) => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+};
+
+const getIntervalDaysForLabel = (entries, label) => {
+  const matchingEntries = entries.filter((entry) => entry.label === label);
+  if (matchingEntries.length >= 2) {
+    const last = parseDate(matchingEntries[matchingEntries.length - 1].date);
+    const previous = parseDate(matchingEntries[matchingEntries.length - 2].date);
+    return Math.max(1, Math.round((last - previous) / DAY_MS));
+  }
+
+  return DEFAULT_BAJRAM_INTERVAL_DAYS;
+};
+
+const expandBajramEntries = (bajrams, today) => {
+  const sortedEntries = [...bajrams].sort(
+    (a, b) => parseDate(a.date).getTime() - parseDate(b.date).getTime()
+  );
+
+  if (!sortedEntries.length) {
+    return [];
+  }
+
+  const futureBufferLimit = new Date(today);
+  futureBufferLimit.setFullYear(futureBufferLimit.getFullYear() + 3);
+
+  const lastConfiguredDate = parseDate(sortedEntries[sortedEntries.length - 1].date);
+  if (lastConfiguredDate >= today) {
+    return sortedEntries;
+  }
+
+  const intervalsByLabel = new Map(
+    [...new Set(sortedEntries.map((entry) => entry.label))].map((label) => [
+      label,
+      getIntervalDaysForLabel(sortedEntries, label)
+    ])
+  );
+
+  const latestByLabel = new Map();
+  sortedEntries.forEach((entry) => {
+    latestByLabel.set(entry.label, entry);
+  });
+
+  const expandedEntries = [...sortedEntries];
+
+  while (true) {
+    const nextCandidates = [...latestByLabel.values()].map((entry) => {
+      const intervalDays = intervalsByLabel.get(entry.label) || DEFAULT_BAJRAM_INTERVAL_DAYS;
+      const nextDate = parseDate(entry.date);
+      nextDate.setDate(nextDate.getDate() + intervalDays);
+
+      return {
+        label: entry.label,
+        date: formatDate(nextDate)
+      };
+    });
+
+    nextCandidates.sort((a, b) => parseDate(a.date).getTime() - parseDate(b.date).getTime());
+    const nextCandidate = nextCandidates[0];
+
+    if (!nextCandidate || parseDate(nextCandidate.date) > futureBufferLimit) {
+      break;
+    }
+
+    expandedEntries.push(nextCandidate);
+    latestByLabel.set(nextCandidate.label, nextCandidate);
+  }
+
+  return expandedEntries.sort((a, b) => parseDate(a.date).getTime() - parseDate(b.date).getTime());
+};
+
 export function getNextBajram(today, bajrams = []) {
-  const nextBajram = bajrams.find((item) => new Date(`${item.date}T00:00:00`) >= today) || bajrams[0];
+  const normalizedToday = new Date(today);
+  const bajramEntries = expandBajramEntries(bajrams, normalizedToday);
+  const nextBajram = bajramEntries.find((item) => parseDate(item.date) >= normalizedToday);
 
   if (!nextBajram) {
     return {

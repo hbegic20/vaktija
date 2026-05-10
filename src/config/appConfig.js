@@ -1,5 +1,5 @@
 export default {
-  mosqueName: "Džamija Vesela Bugojno",
+  mosqueName: "Džemat Vesela Bugojno",
   defaultCity: "bugojno",
   cities: {
     bugojno: { label: "Bugojno", lat: 44.057, lng: 17.451, townId: 16 },
@@ -24,6 +24,7 @@ export default {
     adminPin: "1234"
   },
   prayerApi: {
-    baseUrl: "https://api.vaktija.ba/vaktija/v1"
+    primaryBaseUrl: "https://api.vaktija.ba/vaktija/v1",
+    fallbackBaseUrl: "/.netlify/functions/prayer-times"
   }
 };

@@ -42,6 +42,25 @@
               :description="weather.description"
               :windspeed="weather.windspeed"
             />
+            <div class="section-card debug-card">
+              <div class="debug-title">Debug status</div>
+              <div class="debug-row">
+                <span>API lokacija</span>
+                <strong>{{ prayerTimes?.location || "--" }}</strong>
+              </div>
+              <div class="debug-row">
+                <span>townId</span>
+                <strong>{{ prayerTimes?.townId ?? selectedCity.townId }}</strong>
+              </div>
+              <div class="debug-row">
+                <span>Izvor</span>
+                <strong>{{ prayerTimes?.source || "--" }}</strong>
+              </div>
+              <div class="debug-row">
+                <span>Datum API</span>
+                <strong>{{ prayerTimes?.apiDate || "--" }}</strong>
+              </div>
+            </div>
             <BajramCountdown
               :bajram-label="nextBajramStatus.label"
               :bajram-date="formatBosnianDate(nextBajramStatus.date)"

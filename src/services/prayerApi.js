@@ -39,7 +39,9 @@ const toNormalizedPrayerResponse = (data, townId, dateKey) => {
       Isha: normalizeTime(timings[5])
     },
     location: data?.lokacija || "",
-    townId: data?.id ?? townId
+    townId: data?.id ?? townId,
+    source: data?.source || "vaktija.ba",
+    apiDate: Array.isArray(data?.datum) ? data.datum[1] || dateKey : data?.datum || dateKey
   };
 };
 

@@ -531,6 +531,32 @@ body {
   letter-spacing: 0.012em;
 }
 
+.debug-card {
+  gap: 10px;
+}
+
+.debug-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #14532d;
+}
+
+.debug-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  font-size: 1.05rem;
+  color: #334155;
+}
+
+.debug-row strong {
+  color: #0f172a;
+  text-align: right;
+}
+
 .portrait-mode {
   padding: 18px 14px 28px;
 }

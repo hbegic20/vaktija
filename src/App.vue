@@ -1,5 +1,8 @@
 <template>
-  <div class="kiosk-shell min-h-screen px-12 py-8 pb-28">
+  <div
+    class="kiosk-shell min-h-screen px-12 py-8 pb-28"
+    :class="{ 'portrait-mode': isPortraitLayout }"
+  >
     <AdhanOverlay :visible="adhanVisible" :prayer-label="adhanPrayerLabel" />
 
     <div class="kiosk-frame">
@@ -16,9 +19,11 @@
         <DateDisplay :gregorian="gregorianDate" :hijri="hijriDate" />
       </div>
 
-      <div class="mt-6 grid grid-cols-[2.3fr_1fr] gap-6">
-        <PrayerTimes :prayers="prayerRows" />
-        <div class="space-y-4">
+      <div class="app-main-grid mt-6 grid grid-cols-[2.3fr_1fr] gap-6">
+        <div class="app-prayer-panel">
+          <PrayerTimes :prayers="prayerRows" />
+        </div>
+        <div class="app-side-stack space-y-4">
           <RamadanInfo
             v-if="ramadanStatus.isRamadan"
             :is-ramadan="ramadanStatus.isRamadan"
@@ -46,11 +51,11 @@
         </div>
       </div>
 
-      <div class="mt-6">
+      <div class="app-countdown mt-6">
         <Countdown :next-prayer-label="nextPrayerLabel" :countdown="countdown" />
       </div>
 
-      <div class="mt-6">
+      <div class="app-quote mt-6">
         <DailyQuote :quote="dailyQuote" />
       </div>
     </div>
@@ -172,12 +177,20 @@ const adhanPrayerLabel = ref("");
 const ramadanStatus = ref(getRamadanStatus(now.value, config.ramadan));
 const nextBajramStatus = ref(getNextBajram(now.value, config.bajrams));
 const lastAdhanKey = ref("");
+const viewportLayoutMode = ref("portrait");
+
+const layoutPreference = (() => {
+  if (typeof window === "undefined") return "auto";
+  const layout = new URLSearchParams(window.location.search).get("layout");
+  return layout === "landscape" || layout === "auto" ? layout : "portrait";
+})();
 
 let timeInterval;
 let weatherInterval;
 let midnightTimeout;
 let adhanTimeout;
 let wakeLock;
+let handleViewportChange;
 
 const cityOptions = computed(() =>
   Object.entries(config.cities).map(([key, value]) => ({
@@ -187,6 +200,10 @@ const cityOptions = computed(() =>
 );
 
 const selectedCity = computed(() => config.cities[selectedCityKey.value]);
+const isPortraitLayout = computed(() =>
+  layoutPreference === "portrait" ||
+  (layoutPreference !== "landscape" && viewportLayoutMode.value === "portrait")
+);
 
 const clockText = computed(() =>
   new Intl.DateTimeFormat("bs-BA", {
@@ -425,6 +442,13 @@ function startTimers() {
 }
 
 onMounted(async () => {
+  handleViewportChange = () => {
+    viewportLayoutMode.value = window.innerHeight > window.innerWidth ? "portrait" : "landscape";
+  };
+  handleViewportChange();
+  window.addEventListener("resize", handleViewportChange);
+  window.addEventListener("orientationchange", handleViewportChange);
+
   await loadPrayerTimes();
   await loadWeather();
   scheduleMidnightRefresh();
@@ -444,6 +468,8 @@ onUnmounted(() => {
   clearInterval(weatherInterval);
   clearTimeout(midnightTimeout);
   clearTimeout(adhanTimeout);
+  window.removeEventListener("resize", handleViewportChange);
+  window.removeEventListener("orientationchange", handleViewportChange);
   if (wakeLock) wakeLock.release();
 });
 

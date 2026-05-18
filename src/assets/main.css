@@ -24,6 +24,36 @@ body {
   font-family: "Noto Sans", system-ui, sans-serif;
 }
 
+.kiosk-viewport {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.kiosk-viewport.rotate-0 {
+  transform: none;
+  transform-origin: center center;
+}
+
+.kiosk-viewport.rotate-90 {
+  width: 100vh;
+  height: 100vw;
+  transform: rotate(90deg) translateY(-100%);
+  transform-origin: top left;
+}
+
+.kiosk-viewport.rotate-180 {
+  transform: rotate(180deg) translate(-100%, -100%);
+  transform-origin: top left;
+}
+
+.kiosk-viewport.rotate-270 {
+  width: 100vh;
+  height: 100vw;
+  transform: rotate(270deg) translateX(-100%);
+  transform-origin: top left;
+}
+
 .font-arabic {
   font-family: "Amiri", "Noto Sans Arabic", serif;
 }

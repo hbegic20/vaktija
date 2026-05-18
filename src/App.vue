@@ -1,62 +1,64 @@
 <template>
-  <div
-    class="kiosk-shell min-h-screen px-12 py-8 pb-28"
-    :class="{ 'portrait-mode': isPortraitLayout }"
-  >
-    <AdhanOverlay :visible="adhanVisible" :prayer-label="adhanPrayerLabel" />
+  <div class="kiosk-viewport" :class="viewportRotationClass">
+    <div
+      class="kiosk-shell min-h-screen px-12 py-8 pb-28"
+      :class="{ 'portrait-mode': isPortraitLayout }"
+    >
+      <AdhanOverlay :visible="adhanVisible" :prayer-label="adhanPrayerLabel" />
 
-    <div class="kiosk-frame">
-      <div class="flex items-center justify-between w-full">
-        <Header :mosque-name="config.mosqueName" :city-label="selectedCity.label" />
-        <!-- <CitySelector v-model="selectedCityKey" :cities="cityOptions" /> -->
-      </div>
-
-      <div class="ornament-band my-4"></div>
-
-      <Clock :time-text="clockText" />
-
-      <div class="mt-2">
-        <DateDisplay :gregorian="gregorianDate" :hijri="hijriDate" />
-      </div>
-
-      <div class="app-main-grid mt-6 grid grid-cols-[2.3fr_1fr] gap-6">
-        <div class="app-prayer-panel">
-          <PrayerTimes :prayers="prayerRows" />
+      <div class="kiosk-frame">
+        <div class="flex items-center justify-between w-full">
+          <Header :mosque-name="config.mosqueName" :city-label="selectedCity.label" />
+          <!-- <CitySelector v-model="selectedCityKey" :cities="cityOptions" /> -->
         </div>
-        <div class="app-side-stack space-y-4">
-          <RamadanInfo
-            v-if="ramadanStatus.isRamadan"
-            :is-ramadan="ramadanStatus.isRamadan"
-            :day-index="ramadanStatus.dayIndex"
-            :progress="ramadanStatus.progress"
-            :bajram-label="nextBajramStatus.label"
-            :days-to-eid="nextBajramStatus.days"
-            :time-to-eid="nextBajramStatus.time"
-            :sehur="sehurTime"
-            :iftar="iftarTime"
-          />
-          <WeatherWidget
-            :city-label="selectedCity.label"
-            :temperature="weather.temperature"
-            :description="weather.description"
-            :windspeed="weather.windspeed"
-          />
-          <BajramCountdown
-            :bajram-label="nextBajramStatus.label"
-            :bajram-date="formatBosnianDate(nextBajramStatus.date)"
-            :days-to-eid="nextBajramStatus.days"
-            :show-time="nextBajramStatus.days === 0"
-            :time-to-eid="nextBajramStatus.time"
-          />
+
+        <div class="ornament-band my-4"></div>
+
+        <Clock :time-text="clockText" />
+
+        <div class="mt-2">
+          <DateDisplay :gregorian="gregorianDate" :hijri="hijriDate" />
         </div>
-      </div>
 
-      <div class="app-countdown mt-6">
-        <Countdown :next-prayer-label="nextPrayerLabel" :countdown="countdown" />
-      </div>
+        <div class="app-main-grid mt-6 grid grid-cols-[2.3fr_1fr] gap-6">
+          <div class="app-prayer-panel">
+            <PrayerTimes :prayers="prayerRows" />
+          </div>
+          <div class="app-side-stack space-y-4">
+            <RamadanInfo
+              v-if="ramadanStatus.isRamadan"
+              :is-ramadan="ramadanStatus.isRamadan"
+              :day-index="ramadanStatus.dayIndex"
+              :progress="ramadanStatus.progress"
+              :bajram-label="nextBajramStatus.label"
+              :days-to-eid="nextBajramStatus.days"
+              :time-to-eid="nextBajramStatus.time"
+              :sehur="sehurTime"
+              :iftar="iftarTime"
+            />
+            <WeatherWidget
+              :city-label="selectedCity.label"
+              :temperature="weather.temperature"
+              :description="weather.description"
+              :windspeed="weather.windspeed"
+            />
+            <BajramCountdown
+              :bajram-label="nextBajramStatus.label"
+              :bajram-date="formatBosnianDate(nextBajramStatus.date)"
+              :days-to-eid="nextBajramStatus.days"
+              :show-time="nextBajramStatus.days === 0"
+              :time-to-eid="nextBajramStatus.time"
+            />
+          </div>
+        </div>
 
-      <div class="app-quote mt-6">
-        <DailyQuote :quote="dailyQuote" />
+        <div class="app-countdown mt-6">
+          <Countdown :next-prayer-label="nextPrayerLabel" :countdown="countdown" />
+        </div>
+
+        <div class="app-quote mt-6">
+          <DailyQuote :quote="dailyQuote" />
+        </div>
       </div>
     </div>
   </div>
@@ -163,7 +165,7 @@ const getBosnianDateParts = (date) => {
   };
 };
 
-const selectedCityKey = ref(config.defaultCity);
+const selectedCityKey = ref("bugojno");
 const now = ref(getZonedNow());
 const prayerTimes = ref(null);
 const tomorrowPrayerTimes = ref(null);
@@ -177,12 +179,12 @@ const adhanPrayerLabel = ref("");
 const ramadanStatus = ref(getRamadanStatus(now.value, config.ramadan));
 const nextBajramStatus = ref(getNextBajram(now.value, config.bajrams));
 const lastAdhanKey = ref("");
-const viewportLayoutMode = ref("portrait");
+const viewportLayoutMode = ref("landscape");
 
 const layoutPreference = (() => {
   if (typeof window === "undefined") return "auto";
   const layout = new URLSearchParams(window.location.search).get("layout");
-  return layout === "landscape" || layout === "auto" ? layout : "portrait";
+  return layout === "portrait" || layout === "landscape" ? layout : "auto";
 })();
 
 let timeInterval;
@@ -204,6 +206,7 @@ const isPortraitLayout = computed(() =>
   layoutPreference === "portrait" ||
   (layoutPreference !== "landscape" && viewportLayoutMode.value === "portrait")
 );
+const viewportRotationClass = computed(() => "rotate-90");
 
 const clockText = computed(() =>
   new Intl.DateTimeFormat("bs-BA", {

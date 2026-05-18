@@ -65,9 +65,8 @@
 </template>
 
 <script setup>
-import { computed, onMounted, onUnmounted, ref, watch } from "vue";
+import { computed, onMounted, onUnmounted, ref } from "vue";
 import Header from "./components/Header.vue";
-import CitySelector from "./components/CitySelector.vue";
 import Clock from "./components/Clock.vue";
 import DateDisplay from "./components/DateDisplay.vue";
 import PrayerTimes from "./components/PrayerTimes.vue";
@@ -107,6 +106,7 @@ const bosnianMonths = [
   "novembar",
   "decembar"
 ];
+const bugojnoCity = config.cities.bugojno;
 
 const getZonedNow = () => {
   const formatter = new Intl.DateTimeFormat("sv-SE", {
@@ -165,7 +165,6 @@ const getBosnianDateParts = (date) => {
   };
 };
 
-const selectedCityKey = ref("bugojno");
 const now = ref(getZonedNow());
 const prayerTimes = ref(null);
 const tomorrowPrayerTimes = ref(null);
@@ -194,14 +193,7 @@ let adhanTimeout;
 let wakeLock;
 let handleViewportChange;
 
-const cityOptions = computed(() =>
-  Object.entries(config.cities).map(([key, value]) => ({
-    key,
-    label: value.label
-  }))
-);
-
-const selectedCity = computed(() => config.cities[selectedCityKey.value]);
+const selectedCity = computed(() => bugojnoCity);
 const isPortraitLayout = computed(() =>
   layoutPreference === "portrait" ||
   (layoutPreference !== "landscape" && viewportLayoutMode.value === "portrait")
@@ -476,8 +468,4 @@ onUnmounted(() => {
   if (wakeLock) wakeLock.release();
 });
 
-watch(selectedCityKey, async () => {
-  await loadPrayerTimes();
-  await loadWeather();
-});
 </script>

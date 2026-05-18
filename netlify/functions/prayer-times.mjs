@@ -156,7 +156,7 @@ const getDateKey = (date) =>
   ].join("-");
 
 const getStaticPrayerTimes = (townId, date) => {
-  if (String(townId) !== "16") {
+  if (String(townId) !== String(config.cities.bugojno.townId)) {
     return null;
   }
 

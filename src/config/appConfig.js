@@ -2,9 +2,9 @@ export default {
   mosqueName: "Džemat Vesela Bugojno",
   defaultCity: "bugojno",
   cities: {
-    bugojno: { label: "Bugojno", lat: 44.057, lng: 17.451, townId: 17 },
-    sarajevo: { label: "Sarajevo", lat: 43.8563, lng: 18.4131, townId: 78 },
-    travnik: { label: "Travnik", lat: 44.226, lng: 17.665, townId: 91 }
+    bugojno: { label: "Bugojno", lat: 44.057, lng: 17.451, townId: 16 },
+    sarajevo: { label: "Sarajevo", lat: 43.8563, lng: 18.4131, townId: 77 },
+    travnik: { label: "Travnik", lat: 44.226, lng: 17.665, townId: 90 }
   },
   kaaba: { lat: 21.4225, lng: 39.8262 },
   ramadan: {

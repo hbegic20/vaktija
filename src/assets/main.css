@@ -28,6 +28,7 @@ body {
   width: 100vw;
   height: 100vh;
   overflow: hidden;
+  background: #10281d;
 }
 
 .kiosk-viewport.rotate-0 {
@@ -532,17 +533,20 @@ body {
 }
 
 .portrait-mode {
-  padding: 18px 14px 28px;
+  min-height: 100vw;
+  padding: 10px 8px 14px;
 }
 
 .portrait-mode .kiosk-frame {
-  min-height: calc(100vh - 36px);
-  padding: 18px 16px 28px;
+  min-height: calc(100vw - 20px);
+  padding: 12px 12px 16px;
+  border-radius: 18px;
 }
 
 .portrait-mode .hero-header {
-  gap: 14px;
-  padding: 14px 16px;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 16px;
 }
 
 .portrait-mode .hero-header,
@@ -552,131 +556,183 @@ body {
 }
 
 .portrait-mode .hero-logo-wrap {
-  width: 68px;
-  height: 68px;
+  width: 54px;
+  height: 54px;
 }
 
 .portrait-mode .hero-city-chip {
   width: 100%;
   text-align: center;
-  padding: 12px 16px;
-  font-size: 1.15rem;
+  padding: 8px 12px;
+  font-size: 0.95rem;
 }
 
 .portrait-mode .ornament-band {
-  margin: 14px 0 16px;
+  margin: 10px 0 12px;
+  height: 6px;
 }
 
 .portrait-mode .hero-clock {
-  padding: 4px 0 10px;
+  padding: 2px 0 8px;
 }
 
 .portrait-mode .clock-shell {
   width: 100%;
   min-width: 0;
-  padding: 18px 16px 20px;
+  padding: 12px 10px 14px;
+  border-radius: 18px;
 }
 
 .portrait-mode .clock-value {
-  font-size: clamp(64px, 12vw, 94px);
+  font-size: clamp(48px, 8vw, 68px);
+  gap: 0.02em;
+}
+
+.portrait-mode .clock-caption {
+  margin-bottom: 4px;
+  font-size: 0.72rem;
+  letter-spacing: 0.26em;
 }
 
 .portrait-mode .date-display {
   grid-template-columns: 1fr;
-  gap: 12px;
+  gap: 8px;
 }
 
 .portrait-mode .date-chip {
-  padding: 14px 16px 16px;
+  padding: 10px 12px 12px;
+  border-radius: 16px;
+}
+
+.portrait-mode .date-chip-label {
+  margin-bottom: 4px;
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
 }
 
 .portrait-mode .date-chip-value {
-  font-size: 1.75rem !important;
+  font-size: 1.28rem !important;
 }
 
 .portrait-mode .app-main-grid {
   grid-template-columns: 1fr;
-  gap: 12px;
+  gap: 10px;
+  margin-top: 10px;
 }
 
 .portrait-mode .app-side-stack {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 10px;
+  gap: 8px;
 }
 
 .portrait-mode .table-header {
-  padding: 12px 14px;
+  padding: 8px 10px;
 }
 
 .portrait-mode .table-header > div {
-  font-size: 1.55rem !important;
-  letter-spacing: 0.1em;
+  font-size: 1.02rem !important;
+  letter-spacing: 0.08em;
 }
 
 .portrait-mode .table-row {
-  grid-template-columns: minmax(0, 1fr) 138px minmax(0, 1fr) !important;
-  padding: 13px 14px;
-  font-size: 2.3rem !important;
+  grid-template-columns: minmax(0, 1fr) 96px minmax(0, 1fr) !important;
+  padding: 9px 10px;
+  font-size: 1.6rem !important;
 }
 
 .portrait-mode .table-row .font-arabic {
-  font-size: 2rem;
+  font-size: 1.35rem;
 }
 
 .portrait-mode .section-card {
-  padding: 12px 14px;
+  padding: 10px 12px;
+  border-radius: 14px;
 }
 
 .portrait-mode .quote-card {
-  padding: 12px 16px;
+  padding: 10px 12px;
+  border-radius: 16px;
 }
 
 .portrait-mode .quote-bosnian {
-  font-size: 1.08rem;
-  line-height: 1.35;
+  font-size: 0.92rem;
+  line-height: 1.28;
 }
 
 .portrait-mode .app-countdown {
-  margin-top: 14px;
+  margin-top: 10px;
 }
 
 .portrait-mode .app-quote {
-  margin-top: 12px;
+  margin-top: 8px;
 }
 
 .portrait-mode .app-countdown .section-card {
-  padding: 10px 14px;
+  padding: 8px 10px;
 }
 
 .portrait-mode .app-countdown .text-\[24px\] {
-  font-size: 1rem !important;
-}
-
-.portrait-mode .app-countdown .text-\[44px\] {
-  font-size: 1.9rem !important;
-}
-
-.portrait-mode .app-countdown .text-\[64px\] {
-  font-size: 2.9rem !important;
-}
-
-.portrait-mode .app-quote .text-\[20px\] {
-  font-size: 0.9rem !important;
-}
-
-.portrait-mode .app-quote .text-\[18px\] {
   font-size: 0.82rem !important;
 }
 
+.portrait-mode .app-countdown .text-\[44px\] {
+  font-size: 1.45rem !important;
+}
+
+.portrait-mode .app-countdown .text-\[64px\] {
+  font-size: 2.15rem !important;
+}
+
+.portrait-mode .app-quote .text-\[20px\] {
+  font-size: 0.76rem !important;
+}
+
+.portrait-mode .app-quote .text-\[18px\] {
+  font-size: 0.72rem !important;
+}
+
 .portrait-mode .app-quote .text-\[28px\] {
-  font-size: 1.15rem !important;
+  font-size: 0.96rem !important;
 }
 
 .portrait-mode .app-prayer-panel .table-card {
   box-shadow:
     0 22px 40px rgba(20, 83, 45, 0.14),
     0 0 42px rgba(52, 211, 153, 0.1);
+}
+
+.portrait-mode .hero-header .text-\[14px\] {
+  font-size: 0.58rem !important;
+  letter-spacing: 0.22em;
+}
+
+.portrait-mode .hero-header .text-\[32px\] {
+  font-size: 1.28rem !important;
+}
+
+.portrait-mode .section-card .text-\[28px\] {
+  font-size: 1rem !important;
+}
+
+.portrait-mode .section-card .text-\[26px\] {
+  font-size: 0.96rem !important;
+}
+
+.portrait-mode .section-card .text-\[32px\] {
+  font-size: 1.4rem !important;
+}
+
+.portrait-mode .section-card .text-\[30px\] {
+  font-size: 1rem !important;
+}
+
+.portrait-mode .section-card .text-\[56px\] {
+  font-size: 1.6rem !important;
+}
+
+.portrait-mode .section-card .text-\[80px\] {
+  font-size: 2.2rem !important;
 }
 
 @media (orientation: portrait) {

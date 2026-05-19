@@ -386,7 +386,7 @@ function triggerAdhan(prayerKey) {
   if (adhanTimeout) clearTimeout(adhanTimeout);
   adhanTimeout = setTimeout(() => {
     adhanVisible.value = false;
-  }, 60000);
+  }, 30000);
 }
 
 function updateRamadan() {

@@ -9,7 +9,7 @@
       <div
         v-for="prayer in prayers"
         :key="prayer.key"
-        class="table-row grid grid-cols-[1fr_240px_1fr] items-center text-[58px]"
+        class="table-row grid grid-cols-[240px_240px_240px] items-center text-[58px]"
         :class="{
           'table-row-next': prayer.isNext,
           'table-row-current': prayer.isCurrent

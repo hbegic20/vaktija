@@ -1,9 +1,6 @@
 <template>
   <div class="kiosk-viewport" :class="viewportRotationClass">
-    <div
-      class="kiosk-shell min-h-screen px-12 py-8 pb-28"
-      :class="{ 'portrait-mode': isPortraitLayout }"
-    >
+    <div class="kiosk-shell min-h-screen px-12 py-8 pb-28">
       <AdhanOverlay :visible="adhanVisible" :prayer-label="adhanPrayerLabel" />
 
       <div class="kiosk-frame">
@@ -20,13 +17,15 @@
           <DateDisplay :gregorian="gregorianDate" :hijri="hijriDate" />
         </div>
 
-        <div class="app-main-grid mt-6 grid grid-cols-[2.3fr_1fr] gap-6">
+        <div
+          class="app-main-grid mt-6 grid gap-6"
+          :class="ramadanStatus.isRamadan ? 'grid-cols-[2.3fr_1fr]' : 'grid-cols-1'"
+        >
           <div class="app-prayer-panel">
             <PrayerTimes :prayers="prayerRows" />
           </div>
-          <div class="app-side-stack space-y-4">
+          <div v-if="ramadanStatus.isRamadan" class="app-side-stack space-y-4">
             <RamadanInfo
-              v-if="ramadanStatus.isRamadan"
               :is-ramadan="ramadanStatus.isRamadan"
               :day-index="ramadanStatus.dayIndex"
               :progress="ramadanStatus.progress"
@@ -36,6 +35,11 @@
               :sehur="sehurTime"
               :iftar="iftarTime"
             />
+          </div>
+        </div>
+
+        <div class="app-info-grid mt-6">
+          <div class="app-utility-grid">
             <WeatherWidget
               :city-label="selectedCity.label"
               :temperature="weather.temperature"
@@ -49,15 +53,13 @@
               :show-time="nextBajramStatus.days === 0"
               :time-to-eid="nextBajramStatus.time"
             />
+            <div class="app-countdown">
+              <Countdown :next-prayer-label="nextPrayerLabel" :countdown="countdown" />
+            </div>
           </div>
-        </div>
-
-        <div class="app-countdown mt-6">
-          <Countdown :next-prayer-label="nextPrayerLabel" :countdown="countdown" />
-        </div>
-
-        <div class="app-quote mt-6">
-          <DailyQuote :quote="dailyQuote" />
+          <div class="app-quote">
+            <DailyQuote :quote="dailyQuote" />
+          </div>
         </div>
       </div>
     </div>
@@ -178,26 +180,14 @@ const adhanPrayerLabel = ref("");
 const ramadanStatus = ref(getRamadanStatus(now.value, config.ramadan));
 const nextBajramStatus = ref(getNextBajram(now.value, config.bajrams));
 const lastAdhanKey = ref("");
-const viewportLayoutMode = ref("landscape");
-
-const layoutPreference = (() => {
-  if (typeof window === "undefined") return "auto";
-  const layout = new URLSearchParams(window.location.search).get("layout");
-  return layout === "portrait" || layout === "landscape" ? layout : "auto";
-})();
 
 let timeInterval;
 let weatherInterval;
 let midnightTimeout;
 let adhanTimeout;
 let wakeLock;
-let handleViewportChange;
 
 const selectedCity = computed(() => bugojnoCity);
-const isPortraitLayout = computed(() =>
-  layoutPreference === "portrait" ||
-  (layoutPreference !== "landscape" && viewportLayoutMode.value === "portrait")
-);
 const viewportRotationClass = computed(() => "rotate-90");
 
 const clockText = computed(() =>
@@ -437,13 +427,6 @@ function startTimers() {
 }
 
 onMounted(async () => {
-  handleViewportChange = () => {
-    viewportLayoutMode.value = window.innerHeight > window.innerWidth ? "portrait" : "landscape";
-  };
-  handleViewportChange();
-  window.addEventListener("resize", handleViewportChange);
-  window.addEventListener("orientationchange", handleViewportChange);
-
   await loadPrayerTimes();
   await loadWeather();
   scheduleMidnightRefresh();
@@ -463,8 +446,6 @@ onUnmounted(() => {
   clearInterval(weatherInterval);
   clearTimeout(midnightTimeout);
   clearTimeout(adhanTimeout);
-  window.removeEventListener("resize", handleViewportChange);
-  window.removeEventListener("orientationchange", handleViewportChange);
   if (wakeLock) wakeLock.release();
 });
 

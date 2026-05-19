@@ -1,9 +1,9 @@
 <template>
   <div class="section-card space-y-2">
     <div class="text-[28px] text-slate-700 font-semibold">Bajram</div>
-    <div class="text-[28px] text-slate-500">{{ bajramDate }}</div>
+    <div class="text-[34px] text-emerald-700 font-semibold">{{ bajramDate }}</div>
     <div class="text-[28px] text-slate-700">
-      {{ bajramLabel }} za:
+      {{ bajramLabel }} za: <br>
       <span class="font-bajram-count text-[34px] font-bold text-emerald-700">
         {{ daysToEid }} dana
       </span>

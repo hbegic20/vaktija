@@ -378,7 +378,7 @@ body {
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(245, 249, 246, 0.96));
   border: 2px solid rgba(20, 83, 45, 0.2);
   border-radius: 18px;
-  padding: 18px 24px;
+  padding: 8px 24px;
   box-shadow:
     0 14px 30px rgba(15, 23, 42, 0.08),
     0 0 0 1px rgba(255, 255, 255, 0.3) inset;
@@ -391,6 +391,25 @@ body {
   border-radius: inherit;
   background: radial-gradient(circle at top right, rgba(110, 231, 183, 0.16), transparent 30%);
   pointer-events: none;
+}
+
+.app-info-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+  align-items: stretch;
+}
+
+.app-utility-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  align-items: stretch;
+}
+
+.app-info-grid > *,
+.app-utility-grid > * {
+  min-width: 0;
 }
 
 .table-card {
@@ -519,7 +538,7 @@ body {
 .quote-card {
   border: 2px solid rgba(167, 243, 208, 0.35);
   border-radius: 22px;
-  padding: 18px 26px;
+  padding: 8px 26px;
   background:
     radial-gradient(circle at top right, rgba(52, 211, 153, 0.18), transparent 30%),
     linear-gradient(135deg, rgba(6, 78, 59, 0.96), rgba(20, 83, 45, 0.96));
@@ -660,14 +679,6 @@ body {
   line-height: 1.28;
 }
 
-.portrait-mode .app-countdown {
-  margin-top: 10px;
-}
-
-.portrait-mode .app-quote {
-  margin-top: 8px;
-}
-
 .portrait-mode .app-countdown .section-card {
   padding: 8px 10px;
 }
@@ -733,6 +744,12 @@ body {
 
 .portrait-mode .section-card .text-\[80px\] {
   font-size: 2.2rem !important;
+}
+
+@media (max-width: 900px) {
+  .app-utility-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (orientation: portrait) {

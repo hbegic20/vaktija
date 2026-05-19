@@ -38,7 +38,7 @@
           </div>
         </div>
 
-        <div class="app-info-grid mt-6">
+        <div class="app-info-grid mt-2">
           <div class="app-utility-grid">
             <WeatherWidget
               :city-label="selectedCity.label"

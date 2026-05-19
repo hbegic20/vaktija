@@ -531,32 +531,6 @@ body {
   letter-spacing: 0.012em;
 }
 
-.debug-card {
-  gap: 10px;
-}
-
-.debug-title {
-  font-size: 1.15rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: #14532d;
-}
-
-.debug-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-  font-size: 1.05rem;
-  color: #334155;
-}
-
-.debug-row strong {
-  color: #0f172a;
-  text-align: right;
-}
-
 .portrait-mode {
   padding: 18px 14px 28px;
 }
@@ -622,45 +596,87 @@ body {
 
 .portrait-mode .app-main-grid {
   grid-template-columns: 1fr;
-  gap: 16px;
+  gap: 12px;
 }
 
 .portrait-mode .app-side-stack {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 14px;
+  gap: 10px;
 }
 
 .portrait-mode .table-header {
-  padding: 10px 14px;
+  padding: 12px 14px;
 }
 
 .portrait-mode .table-header > div {
-  font-size: 1.3rem !important;
+  font-size: 1.55rem !important;
   letter-spacing: 0.1em;
 }
 
 .portrait-mode .table-row {
-  grid-template-columns: minmax(0, 1fr) 118px minmax(0, 1fr) !important;
-  padding: 10px 14px;
-  font-size: 2rem !important;
+  grid-template-columns: minmax(0, 1fr) 138px minmax(0, 1fr) !important;
+  padding: 13px 14px;
+  font-size: 2.3rem !important;
 }
 
 .portrait-mode .table-row .font-arabic {
-  font-size: 1.8rem;
+  font-size: 2rem;
 }
 
 .portrait-mode .section-card {
-  padding: 14px 16px;
+  padding: 12px 14px;
 }
 
 .portrait-mode .quote-card {
-  padding: 14px 18px;
+  padding: 12px 16px;
 }
 
 .portrait-mode .quote-bosnian {
-  font-size: 1.35rem;
-  line-height: 1.45;
+  font-size: 1.08rem;
+  line-height: 1.35;
+}
+
+.portrait-mode .app-countdown {
+  margin-top: 14px;
+}
+
+.portrait-mode .app-quote {
+  margin-top: 12px;
+}
+
+.portrait-mode .app-countdown .section-card {
+  padding: 10px 14px;
+}
+
+.portrait-mode .app-countdown .text-\[24px\] {
+  font-size: 1rem !important;
+}
+
+.portrait-mode .app-countdown .text-\[44px\] {
+  font-size: 1.9rem !important;
+}
+
+.portrait-mode .app-countdown .text-\[64px\] {
+  font-size: 2.9rem !important;
+}
+
+.portrait-mode .app-quote .text-\[20px\] {
+  font-size: 0.9rem !important;
+}
+
+.portrait-mode .app-quote .text-\[18px\] {
+  font-size: 0.82rem !important;
+}
+
+.portrait-mode .app-quote .text-\[28px\] {
+  font-size: 1.15rem !important;
+}
+
+.portrait-mode .app-prayer-panel .table-card {
+  box-shadow:
+    0 22px 40px rgba(20, 83, 45, 0.14),
+    0 0 42px rgba(52, 211, 153, 0.1);
 }
 
 @media (orientation: portrait) {

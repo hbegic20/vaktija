@@ -1,15 +1,15 @@
 <template>
   <div class="quote-card">
     <div class="flex items-center justify-between gap-6">
-      <div class="text-[24px] uppercase tracking-[0.18em] text-emerald-100">
+      <div class="text-[20px] uppercase tracking-[0.18em] text-emerald-100">
         Ajet Dana
       </div>
-      <div class="text-[22px] text-emerald-200">
+      <div class="text-[18px] text-emerald-200">
         {{ quote.reference }}
       </div>
     </div>
 
-    <div class="mt-3 text-right font-arabic text-[34px] leading-[1.7] text-white">
+    <div class="mt-3 text-right font-arabic text-[28px] leading-[1.6] text-white">
       {{ quote.arabic }}
     </div>
 

@@ -9,7 +9,7 @@
           <!-- <CitySelector v-model="selectedCityKey" :cities="cityOptions" /> -->
         </div>
 
-        <div class="ornament-band my-4"></div>
+        <div class="ornament-band my-2"></div>
 
         <Clock :time-text="clockText" />
 

@@ -1,7 +1,7 @@
 <template>
   <div class="date-display">
     <div class="date-chip">
-      <div class="date-chip-label">Gregorijanski kalendar</div>
+      <div class="date-chip-label">Kalendar</div>
       <div class="date-chip-value text-[38px] text-slate-700 font-semibold">{{ gregorian }}</div>
     </div>
     <div class="date-chip date-chip-hijri">

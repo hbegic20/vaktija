@@ -1,5 +1,6 @@
 const PRAYER_API_DEFAULT_BASE_URL = "https://api.vaktija.ba/vaktija/v1";
 const PRAYER_API_FALLBACK_BASE_URL = "/.netlify/functions/prayer-times";
+const PRAYER_CACHE_VERSION = "v2";
 
 const PRAYER_ORDER = ["Fajr", "Sunrise", "Dhuhr", "Asr", "Maghrib", "Isha"];
 
@@ -61,10 +62,24 @@ export const prayerOrder = PRAYER_ORDER;
 
 export async function fetchPrayerTimes(townId, date, options = {}) {
   const dateKey = toLocalDateKey(date);
-  const cacheKey = `vaktija_${townId}_${dateKey}`;
+  const cacheKey = `vaktija_${PRAYER_CACHE_VERSION}_${townId}_${dateKey}`;
   const cached = localStorage.getItem(cacheKey);
   if (cached) {
-    return JSON.parse(cached);
+    try {
+      const parsed = JSON.parse(cached);
+      if (
+        parsed &&
+        parsed.timings &&
+        parsed.location &&
+        parsed.townId &&
+        parsed.source &&
+        parsed.apiDate
+      ) {
+        return parsed;
+      }
+    } catch {
+      // Ignore broken cache and refetch.
+    }
   }
 
   const baseUrls = [
